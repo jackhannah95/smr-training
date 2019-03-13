@@ -5,26 +5,26 @@
 ### Original Author: Jack Hannah
 ### Original Date: 09 April 2018
 ### Last edited by: Jack Hannah
-### Last edited on: 23 January 2019
+### Last edited on: 13 March 2019
 ###
 ### Written to be run on RStudio Server
 ###
 ### Packages required:
 ### odbc (for SMRA extraction);
 ### haven (for reading SPSS files);
-### dplyr, tidyr, purrr & janitor (for data manipulation);
+### here (for defining filepaths);
+### dplyr, tidylog, tidyr, purrr & janitor (for data manipulation);
 ### magrittr (for compound assignment pipe-operator %<>%);
 ### lubridate (for dates);
 ### openxlsx (for writing Excel files)
 ###
-### This script is designed to provide an R equivalent to the existing SPSS 
+### This code is designed to provide an R equivalent to the existing SPSS 
 ### script used to train LIST analysts in SMR extraction and analysis
-###
 
 
 
 ### Section 1: SPSS Equivalent functions ----
- 
+
 
 # Below is an approximate and non-exhaustive list of equivalent functions in R 
 # and SPSS which are commonly used in analysis of SMR data
@@ -47,44 +47,54 @@
 #       summarise(y = sum(y)) %>%                   /Y = SUM(Y)
 #       ungroup()                         
 #
-# Several functions, such as first, last, substr and recode are similar in both 
-# R and SPSS
+# Several functions, such as first, last and substr are similar in both R and 
+# SPSS
 
 
 
 ### Section 2: Housekeeping ----
 
 
-# 2.1 - Install packages
+# 2.1 - RStudio Projects
 
-# To install the odbc and janitor packages, uncomment the two lines of code 
-# below
+# This code uses RStudio Projects, which are a way of bundling together related 
+# files and scripts
+#
+# RStudio Projects come with a .RProj file, and wherever this file is saved is 
+# where RStudio sets the working directory, from which other filepaths can 
+# be defined relatively using the here package
+#
+# Type 'getwd()' into the console to get the working directory for this project
+#
+# For more information on RStudio Projects, please visit
+# https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects
+
+
+# 2.2 - Install packages
+
+# To install the odbc, here, tidylog and janitor packages, uncomment the four  
+# lines of code below
 
 # install.packages("odbc")
+# install.packages("here")
+# install.packages("tidylog")
 # install.packages("janitor")
 
-# Delete these lines after running, as packages only need to be installed once
+# Re-comment these lines after running, as packages only need to be installed 
+# once
 
 
-# 2.2 - Load packages
+# 2.3 - Load packages
 library(odbc)
-library(haven) # Note - make sure latest version of haven is installed
+library(haven)
+library(here)
 library(dplyr)
+library(tidylog)
 library(tidyr)
-library(purrr)
 library(janitor)
 library(magrittr)
 library(lubridate)
 library(openxlsx)
-
-
-# 2.3 - Define filepaths
-
-# Folder which files are read from
-data_filepath <- ("./data/")
-
-# Folder which files are saved to
-output_filepath <- ("./output/")
 
 
 
@@ -92,7 +102,7 @@ output_filepath <- ("./output/")
 
 
 # 3.1 - Source SQL queries
-source("./code/sql_queries.R")
+source(here("code", "sql_queries.R"))
 
 
 # 3.2 - Connect to SMRA tables using odbc connection
@@ -128,13 +138,12 @@ dbDisconnect(channel)
 
 
 # 4.1 - Read in D&G locality lookup file
-dg_localities <- read_spss(paste0(data_filepath, "D&G_Localities.sav")) %>%
+dg_localities <- read_spss(here("data", "D&G_Localities.sav")) %>%
   clean_names()
 
 
 # 4.2 - Read in D&G locality populations file
-dg_pop <- read_spss(paste0(data_filepath,
-                           "201415_D&G_locality_populations.sav")) %>%
+dg_pop <- read_spss(here("data", "201415_D&G_locality_populations.sav")) %>%
   clean_names() %>%
   
   # Financial year is incorrect - should be 2015/16
@@ -172,11 +181,11 @@ mi <- smr1_extract %>%
   ungroup() %>%
   
   # Remove episodes with no locality
-  # These would be included in a region total, but cannot be attributed to a 
+  # These would be included in a region total but cannot be attributed to a 
   # specific locality
   drop_na(locality) %>%
   
-  # Select only financial year of interest, 
+  # Filter only financial year of interest, 
   # stays with relevant main diagnosis and
   # only stays which begin as an emergency admission
   filter(cis_discharge_date %within% interval(dmy(01042015), dmy(31032016)),
@@ -199,8 +208,9 @@ mi <- smr1_extract %>%
 
 
 # Save output to Excel
-mi %>%
-  write.xlsx(paste0(output_filepath, "SMR_Q1_output.xlsx"))
+# Commented out to avoid overwriting existing file every time this code is run
+# mi %>%
+#   write.xlsx(here("output", "SMR_Q1_output.xlsx"))
 
 
 
@@ -212,12 +222,13 @@ copd <- smr1_extract %>%
   
   # Flag episodes where COPD diagnosis is present in any condition variable
   # Multiplying by 1 changes flag from true/false to 1/0
-  mutate(copd_flag = pmap_dbl(select(., contains("condition")), 
-                              ~any(substr(c(...), 1, 1) == "J" &
-                                     between(as.numeric(substr(c(...), 2, 3)),
-                                             40, 44), na.rm = TRUE) * 1)) %>%
+  mutate(copd_flag = purrr::pmap_dbl(select(., contains("condition")), 
+                                     ~any(substr(c(...), 1, 1) == "J" &
+                                            between(as.numeric(
+                                              substr(c(...), 2, 3)), 40, 44), 
+                                          na.rm = TRUE) * 1)) %>%
   
-  # Sort episodes into chronological order for each stay
+  # Arrange episodes into chronological order for each stay
   arrange(link_no, admission_date, record_type, sort_marker,
           discharge_date, admission, discharge, uri) %>%
   
@@ -236,7 +247,7 @@ copd <- smr1_extract %>%
   # specific locality
   drop_na(locality) %>%
   
-  # Select only financial year of interest,
+  # Filter only financial year of interest,
   # only COPD admissions and
   # only emergency admissions
   filter(cis_discharge_date %within% interval(dmy(01042015), dmy(31032016)),
@@ -250,12 +261,11 @@ copd <- smr1_extract %>%
   summarise(emergency_admissions = n()) %>%
   ungroup() %>%
   
-  # Recode into emergency admission bands
-  mutate(emergency_admission_bands = recode(
-    emergency_admissions,
-    '1' = "admissions_1",
-    '2' = "admissions_2",
-    .default = "admissions_3_or_more")) %>%
+  # Categorise emergency admissions into bands
+  mutate(emergency_admission_bands = case_when(
+    emergency_admissions == 1 ~ "admissions_1",
+    emergency_admissions == 2 ~ "admissions_2",
+    emergency_admissions > 2 ~ "admissions_3_or_more")) %>%
   
   # Aggregate to get total number of patients within each band by locality
   group_by(fyear, locality, emergency_admission_bands) %>%
@@ -270,19 +280,22 @@ copd <- smr1_extract %>%
                                                      population * 1000,
                                                    digits = 2)) %>%
   
-  # Restructure dataset
+  # Restructure dataset by dropping patients and population variables and 
+  # converting each emergency admission band into a variable with a 
+  # corresponding multiple emergency admission rate
   select(-patients, -population) %>%
   spread(emergency_admission_bands, multiple_emergency_admission_rate)
 
 
 # Save output to Excel
-copd %>%
-  write.xlsx(paste0(output_filepath, "SMR_Q2_output.xlsx"))
+# Commented out to avoid overwriting existing file every time this code is run
+# copd %>%
+#   write.xlsx(here("output", "SMR_Q2_output.xlsx"))
 
 
 
-# Question 3: Which locality has the highest
-# 30-day mortality rate / 28-day emergency readmission rate in 2015/16?
+# Question 3: Which locality has the highest 30-day mortality rate / 28-day 
+# emergency readmission rate in 2015/16?
 
 # Ensure deaths extract has no one dying on multiple occasions
 deaths_extract %<>%
@@ -293,7 +306,7 @@ deaths_extract %<>%
 
 mort <- smr1_extract %>%
   
-  # Sort episodes into descending chronological order for each stay
+  # Arrange episodes into descending chronological order for each stay
   arrange(link_no, desc(admission_date), desc(record_type),
           desc(sort_marker), desc(discharge_date), desc(admission),
           desc(discharge), desc(uri)) %>%
@@ -307,11 +320,11 @@ mort <- smr1_extract %>%
   ungroup() %>%
   
   # Remove episodes with no locality
-  # These would be included in a region total,
-  # but cannot be attributed to a specific locality
+  # These would be included in a region total but cannot be attributed to a 
+  # specific locality
   drop_na(locality) %>%
   
-  # Select only financial year of interest
+  # Filter only financial year of interest
   filter(cis_discharge_date %within% interval(dmy(01042015), dmy(31032016))) %>%
   mutate(fyear = "2015/16") %>%
   
@@ -349,8 +362,7 @@ mort <- smr1_extract %>%
   # Join with locality populations file
   left_join(dg_pop, by = "locality") %>%
   
-  # Calculate 28-day emergency readmission rate and
-  # 30-day mortality rate
+  # Calculate 28-day emergency readmission rate and 30-day mortality rate
   mutate(mortality_rate = round(mortality_30_days /
                                   population * 1000,
                                 digits = 2),
@@ -360,10 +372,10 @@ mort <- smr1_extract %>%
 
 # Save output to Excel, dropping population, mortality rate and emergency 
 # readmission rate variables
-mort %>%
-  select(-(population:emerg_readm_rate)) %>%
-  write.xlsx(paste0(output_filepath,
-                    "SMR_Q3_output.xlsx"))
+# Commented out to avoid overwriting existing file every time this code is run
+# mort %>%
+#   select(-(population:emerg_readm_rate)) %>%
+#   write.xlsx(here("output", "SMR_Q3_output.xlsx"))
 
 
 
