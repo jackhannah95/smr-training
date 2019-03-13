@@ -5,7 +5,7 @@
 ### Original Author: Jack Hannah
 ### Original Date: 09 April 2018
 ### Last edited by: Jack Hannah
-### Last edited on: 22 January 2018
+### Last edited on: 13 March 2019
 ###
 ### Written to be run on RStudio Server
 ###
@@ -17,7 +17,7 @@
 # Query 1: Extract SMR01 data for D&G council area ----
 query_smr1 <- paste("SELECT ADMISSION_DATE, ADMISSION_TYPE, ADMISSION,",
                     "CIS_MARKER, COUNCIL_AREA, DATAZONE_2011, DISCHARGE,",
-                    "DISCHARGE_DATE, MAIN_CONDITION, OTHER_CONDITION_1,",
+                    "DISCHARGE_DATE, DOB, MAIN_CONDITION, OTHER_CONDITION_1,",
                     "OTHER_CONDITION_2, OTHER_CONDITION_3, OTHER_CONDITION_4,",
                     "OTHER_CONDITION_5, LINK_NO, RECORD_TYPE, SORT_MARKER, URI",
                     "FROM ANALYSIS.SMR01_PI",
