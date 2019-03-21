@@ -5,7 +5,7 @@
 ### Original Author: Jack Hannah
 ### Original Date: 09 April 2018
 ### Last edited by: Jack Hannah
-### Last edited on: 13 March 2019
+### Last edited on: 21 March 2019
 ###
 ### Written to be run on RStudio Server
 ###
@@ -102,7 +102,7 @@ library(openxlsx)
 
 
 # 3.1 - Source SQL queries
-source(here("code", "sql_queries.R"))
+source(here::here("code", "sql_queries.R"))
 
 
 # 3.2 - Connect to SMRA tables using odbc connection
@@ -138,12 +138,13 @@ dbDisconnect(channel)
 
 
 # 4.1 - Read in D&G locality lookup file
-dg_localities <- read_spss(here("data", "D&G_Localities.sav")) %>%
+dg_localities <- read_spss(here::here("data", "D&G_Localities.sav")) %>%
   clean_names()
 
 
 # 4.2 - Read in D&G locality populations file
-dg_pop <- read_spss(here("data", "201415_D&G_locality_populations.sav")) %>%
+dg_pop <- read_spss(here::here("data", 
+                               "201415_D&G_locality_populations.sav")) %>%
   clean_names() %>%
   
   # Financial year is incorrect - should be 2015/16
@@ -210,7 +211,7 @@ mi <- smr1_extract %>%
 # Save output to Excel
 # Commented out to avoid overwriting existing file every time this code is run
 # mi %>%
-#   write.xlsx(here("output", "SMR_Q1_output.xlsx"))
+#   write.xlsx(here::here("output", "SMR_Q1_output.xlsx"))
 
 
 
@@ -290,7 +291,7 @@ copd <- smr1_extract %>%
 # Save output to Excel
 # Commented out to avoid overwriting existing file every time this code is run
 # copd %>%
-#   write.xlsx(here("output", "SMR_Q2_output.xlsx"))
+#   write.xlsx(here::here("output", "SMR_Q2_output.xlsx"))
 
 
 
@@ -375,7 +376,7 @@ mort <- smr1_extract %>%
 # Commented out to avoid overwriting existing file every time this code is run
 # mort %>%
 #   select(-(population:emerg_readm_rate)) %>%
-#   write.xlsx(here("output", "SMR_Q3_output.xlsx"))
+#   write.xlsx(here::here("output", "SMR_Q3_output.xlsx"))
 
 
 
