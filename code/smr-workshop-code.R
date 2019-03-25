@@ -1,5 +1,5 @@
 ################################################################
-### SMR Training - Code
+### SMR Training Code
 ### LIST Team
 ###
 ### Original Author: Jack Hannah
@@ -17,60 +17,13 @@
 ### magrittr (for compound assignment pipe-operator %<>%);
 ### lubridate (for dates);
 ### openxlsx (for writing Excel files)
-###
-### This code is designed to provide an R equivalent to the existing SPSS 
-### script used to train LIST analysts in SMR extraction and analysis
 
 
 
-### Section 1: SPSS Equivalent functions ----
+### Section 1: Housekeeping ----
 
 
-# Below is an approximate and non-exhaustive list of equivalent functions in R 
-# and SPSS which are commonly used in analysis of SMR data
-#
-# 
-# (R) arrange(x)              ==          (SPSS)  SORT CASES BY X (A)
-# (R) arrange(desc(x))        ==          (SPSS)  SORT CASES BY X (D)
-# (R) filter(x == 2)          ==          (SPSS)  SELECT IF X = 2
-# (R) filter(x != 2)          ==          (SPSS)  SELECT IF NOT (X = 2)
-# (R) select(x)               ==          (SPSS)  /KEEP X
-# (R) select(-x)              ==          (SPSS)  /DROP X
-# (R) mutate(x = 2)           ==          (SPSS)  COMPUTE X = 2
-# (R) drop_na(x)              ==          (SPSS)  SELECT IF NOT (SYSMIS(X))
-# (R) left_join(x, y)         ==          (SPSS)  MATCH FILES FILE = X
-#                                                   /TABLE = Y
-#                                                   /BY COMMON_VARIABLES
-#
-# (R) data %<>%               ==          (SPSS)  AGGREGATE OUTFILE = *
-#       group_by(x) %>%                             /BREAK X
-#       summarise(y = sum(y)) %>%                   /Y = SUM(Y)
-#       ungroup()                         
-#
-# Several functions, such as first, last and substr are similar in both R and 
-# SPSS
-
-
-
-### Section 2: Housekeeping ----
-
-
-# 2.1 - RStudio Projects
-
-# This code uses RStudio Projects, which are a way of bundling together related 
-# files and scripts
-#
-# RStudio Projects come with a .RProj file, and wherever this file is saved is 
-# where RStudio sets the working directory, from which other filepaths can 
-# be defined relatively using the here package
-#
-# Type 'getwd()' into the console to get the working directory for this project
-#
-# For more information on RStudio Projects, please visit
-# https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects
-
-
-# 2.2 - Install packages
+# 1.2 - Install packages
 
 # To install the odbc, here, tidylog and janitor packages, uncomment the four  
 # lines of code below
@@ -84,7 +37,7 @@
 # once
 
 
-# 2.3 - Load packages
+# 2.2 - Load packages
 library(odbc)
 library(haven)
 library(here)
@@ -98,14 +51,14 @@ library(openxlsx)
 
 
 
-### Section 3: SMRA extraction ----
+### Section 2: SMRA extraction ----
 
 
-# 3.1 - Source SQL queries
+# 2.1 - Source SQL queries
 source(here::here("code", "sql_queries.R"))
 
 
-# 3.2 - Connect to SMRA tables using odbc connection
+# 2.2 - Connect to SMRA tables using odbc connection
 # The suppressWarnings function prevents your password from appearing in the 
 # console if the connection is unsuccessful
 channel <- suppressWarnings(
@@ -115,34 +68,34 @@ channel <- suppressWarnings(
             pwd = .rs.askForPassword("What is your LDAP password?")))
 
 
-# 3.3 - Extract SMR01 data for D&G council area
-# Required for all three exercises
+# 2.3 - Extract SMR01 data for D&G council area
+# Required for all exercises
 smr1_extract <- as_tibble(dbGetQuery(channel, statement = query_smr1)) %>%
   
   # 'Clean' the variable names for a consistent naming style
   clean_names()
 
 
-# 3.4 - Extract death data in 2015/16
+# 2.4 - Extract death data in 2015/16
 # Required for exercise 3
 deaths_extract <- as_tibble(dbGetQuery(channel, statement = query_deaths)) %>%
   clean_names()
 
 
-# 3.5 - Close odbc connection
+# 2.5 - Close odbc connection
 dbDisconnect(channel)
 
 
 
-### Section 4: Reading in lookup files ----
+### Section 3: Reading in lookup files ----
 
 
-# 4.1 - Read in D&G locality lookup file
+# 3.1 - Read in D&G locality lookup file
 dg_localities <- read_spss(here::here("data", "D&G_Localities.sav")) %>%
   clean_names()
 
 
-# 4.2 - Read in D&G locality populations file
+# 3.2 - Read in D&G locality populations file
 dg_pop <- read_spss(here::here("data", 
                                "201415_D&G_locality_populations.sav")) %>%
   clean_names() %>%
@@ -152,13 +105,13 @@ dg_pop <- read_spss(here::here("data",
   select(-financial_year)
 
 
-# 4.3 - Join locality lookup file to SMR1 extract
+# 3.3 - Join locality lookup file to SMR1 extract
 smr1_extract %<>%
   left_join(dg_localities, by = "datazone_2011")
 
 
 
-### Section 5: Workshop Exercises ----
+### Section 4: Workshop Exercises ----
 
 
 # Question 1:	Which locality has the highest rate of emergency admissions for 
