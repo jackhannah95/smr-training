@@ -6,7 +6,7 @@ This repository contains the code used to train LIST analysts in R. While writte
 ### RStudio Projects
 
 This code uses [RStudio Projects](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects), which are a way of bundling together related files and scripts. RStudio Projects come with a .RProj file, and wherever this file is saved is 
-where RStudio sets the working directory, from which other filepaths can be defined relatively using the [here](https://github.com/r-lib/here) package.
+where RStudio sets the working directory, from which other filepaths can be defined relatively using the [here](https://github.com/r-lib/here) package. A template project can be downloaded from [PHI's GitHub organisation](https://github.com/Health-SocialCare-Scotland/r-project-structure).
 
 Type `getwd()` into the RStudio console to get the working directory for this project.
 
