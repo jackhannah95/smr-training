@@ -25,16 +25,28 @@
 
 # 1.2 - Install packages
 
-# To install the odbc, here, tidylog and janitor packages, uncomment the four  
-# lines of code below
+# In the 'Packages' pane in the bottom right of the screen, there is a 'User 
+# Library' and a 'System Library'
+
+# If any of the odbc, haven, here, dplyr, tidylog, tidyr, purrr, janitor, 
+# magrittr or lubridate packages are not contained within your User Library, 
+# uncomment the relevant lines of code below to install them
+
+# Packages need to be re-loaded every time you re-start R, but they only need 
+# to be installed once
+# Please re-comment the relevant lines below once you've installed the 
+# necessary packages and ignore this section in future
 
 # install.packages("odbc")
+# install.packages("haven")
 # install.packages("here")
+# install.packages("dplyr")
 # install.packages("tidylog")
+# install.packages("tidyr")
+# install.packages("purrr")
 # install.packages("janitor")
-
-# Re-comment these lines after running, as packages only need to be installed 
-# once
+# install.packages("magrittr")
+# install.packages("lubridate")
 
 
 # 2.2 - Load packages
