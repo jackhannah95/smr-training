@@ -23,7 +23,7 @@
 ### Section 1: Housekeeping ----
 
 
-# 1.2 - Install packages
+# 1.1 - Install packages
 
 # In the 'Packages' pane in the bottom right of the screen, there is a 'User 
 # Library' and a 'System Library'
@@ -49,7 +49,7 @@
 # install.packages("lubridate")
 
 
-# 2.2 - Load packages
+# 1.2 - Load packages
 library(odbc)
 library(haven)
 library(here)
