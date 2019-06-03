@@ -5,7 +5,7 @@
 ### Original Author: Jack Hannah
 ### Original Date: 09 April 2018
 ### Last edited by: Jack Hannah
-### Last edited on: 25 March 2019
+### Last edited on: 03 June 2019
 ###
 ### Written to be run on RStudio Server
 ###
@@ -47,6 +47,7 @@
 # install.packages("janitor")
 # install.packages("magrittr")
 # install.packages("lubridate")
+# install.packages("writexl")
 
 
 # 1.2 - Load packages
@@ -59,7 +60,7 @@ library(tidyr)
 library(janitor)
 library(magrittr)
 library(lubridate)
-library(openxlsx)
+library(writexl)
 
 
 
@@ -108,13 +109,9 @@ dg_localities <- read_spss(here::here("data", "D&G_Localities.sav")) %>%
 
 
 # 3.2 - Read in D&G locality populations file
-dg_pop <- read_spss(here::here("data", 
-                               "201415_D&G_locality_populations.sav")) %>%
-  clean_names() %>%
-  
-  # Financial year is incorrect - should be 2015/16
-  # Remove this column - year will be added later
-  select(-financial_year)
+dg_pop <- read_spss(here::here("data",
+                               "D&G_locality_populations.sav")) %>%
+  clean_names()
 
 
 # 3.3 - Join locality lookup file to SMR1 extract
@@ -157,10 +154,10 @@ mi <- smr1_extract %>%
   filter(cis_discharge_date %within% interval(dmy(01042015), dmy(31032016)),
          substr(diagnosis_on_admission, 1, 3) %in% c("I21", "I22"),
          substr(cis_admission_type, 1, 1) == "3") %>%
-  mutate(fyear = "2015/16") %>%
+  mutate(financial_year = "2015/16") %>%
   
   # Aggregate to find locality totals
-  group_by(fyear, locality) %>%
+  group_by(financial_year, locality) %>%
   summarise(emergency_mi_admissions = n()) %>%
   ungroup() %>%
   
@@ -174,10 +171,9 @@ mi <- smr1_extract %>%
 
 
 # Save output to Excel
-# Commented out to avoid overwriting existing file every time this code is run
-# mi %>%
-#   write.xlsx(here::here("output", "q1_smr-output.xlsx"))
-
+mi %>%
+  write_xlsx(here::here("output", "q1_smr-output.xlsx"), 
+             format_headers = FALSE)
 
 
 # Question 2: Which locality has the highest rate of multiple emergency 
@@ -219,11 +215,11 @@ copd <- smr1_extract %>%
   filter(cis_discharge_date %within% interval(dmy(01042015), dmy(31032016)),
          copd_flag == 1,
          substr(cis_admission_type, 1, 1) == "3") %>%
-  mutate(fyear = "2015/16") %>%
+  mutate(financial_year = "2015/16") %>%
   
   # Aggregate to patient level, adding up the number of COPD emergency 
   # admissions for each patient
-  group_by(fyear, locality, link_no) %>%
+  group_by(financial_year, locality, link_no) %>%
   summarise(emergency_admissions = n()) %>%
   ungroup() %>%
   
@@ -234,7 +230,7 @@ copd <- smr1_extract %>%
     emergency_admissions > 2 ~ "admissions_3_or_more")) %>%
   
   # Aggregate to get total number of patients within each band by locality
-  group_by(fyear, locality, emergency_admission_bands) %>%
+  group_by(financial_year, locality, emergency_admission_bands) %>%
   summarise(patients = n()) %>%
   ungroup() %>%
   
@@ -254,9 +250,9 @@ copd <- smr1_extract %>%
 
 
 # Save output to Excel
-# Commented out to avoid overwriting existing file every time this code is run
-# copd %>%
-#   write.xlsx(here::here("output", "q2_smr-output.xlsx"))
+copd %>%
+  write_xlsx(here::here("output", "q2_smr-output.xlsx"), 
+             format_headers = FALSE)
 
 
 
@@ -272,10 +268,9 @@ deaths_extract %<>%
 
 mort <- smr1_extract %>%
   
-  # Arrange episodes into descending chronological order for each stay
-  arrange(link_no, desc(admission_date), desc(record_type),
-          desc(sort_marker), desc(discharge_date), desc(admission),
-          desc(discharge), desc(uri)) %>%
+  # Arrange episodes into ascending chronological order for each stay
+  arrange(link_no, admission_date, record_type, sort_marker, discharge_date, 
+          admission, discharge, uri) %>%
   
   # Aggregate to stay level, taking the first admission type
   group_by(link_no, cis_marker) %>%
@@ -292,7 +287,7 @@ mort <- smr1_extract %>%
   
   # Filter only financial year of interest
   filter(cis_discharge_date %within% interval(dmy(01042015), dmy(31032016))) %>%
-  mutate(fyear = "2015/16") %>%
+  mutate(financial_year = "2015/16") %>%
   
   # Join with deaths extract
   left_join(deaths_extract, by = "link_no") %>%
@@ -307,20 +302,20 @@ mort <- smr1_extract %>%
   # these to 0
   replace_na(list(mortality_30_days = 0)) %>%
   
-  # Arrange into descending stay order by patient for emergency readmission 
+  # Arrange into ascending stay order by patient for emergency readmission 
   # flagging
-  arrange(link_no, desc(cis_marker)) %>%
+  arrange(link_no, cis_marker) %>%
   
   # Flag 28-day emergency readmissions
   mutate(readmission_28_days = if_else(
-    link_no == c(0, head(link_no, -1)) &
+    link_no == c(tail(link_no, -1), 0) &
       substr(lag(cis_admission_type), 1, 1) == 3 &
-      time_length(interval(cis_discharge_date, lag(cis_admission_date)),
+      time_length(interval(cis_discharge_date, lead(cis_admission_date)),
                   unit = "day") <= 28,
     1, 0)) %>%
   
   # Aggregate to find locality totals
-  group_by(fyear, locality) %>%
+  group_by(financial_year, locality) %>%
   summarise(mortality_30_days = sum(mortality_30_days),
             readmission_28_days = sum(readmission_28_days)) %>%
   ungroup() %>%
@@ -338,10 +333,10 @@ mort <- smr1_extract %>%
 
 # Save output to Excel, dropping population, mortality rate and emergency 
 # readmission rate variables
-# Commented out to avoid overwriting existing file every time this code is run
-# mort %>%
-#   select(-(population:emerg_readm_rate)) %>%
-#   write.xlsx(here::here("output", "q3_smr-output.xlsx"))
+mort %>%
+  select(-(population:emerg_readm_rate)) %>%
+  write_xlsx(here::here("output", "q3_smr-output.xlsx"),
+             format_headers = FALSE)
 
 
 
