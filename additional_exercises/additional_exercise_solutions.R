@@ -22,6 +22,7 @@ under_18 <- smr1_extract %>%
   drop_na(locality) %>%
   
   # Calculate a person's age as at their admission date
+  # Note - use 'dob' variable
   mutate(admission_age = floor(time_length(interval(dob, cis_admission_date), 
                                            unit = "years"))) %>%
   
@@ -31,10 +32,10 @@ under_18 <- smr1_extract %>%
   filter(cis_discharge_date %within% interval(dmy(01042015), dmy(31032016)),
          substr(cis_admission_type, 1, 1) == "3",
          admission_age < 18) %>%
-  mutate(fyear = "2015/16") %>%
+  mutate(financial_year = "2015/16") %>%
   
   # Aggregate to find locality totals
-  group_by(fyear, locality) %>%
+  group_by(financial_year, locality) %>%
   summarise(emergency_admissions = n()) %>%
   ungroup()
 
@@ -76,10 +77,11 @@ falls <- smr1_extract %>%
   filter(cis_discharge_date %within% interval(dmy(01042015), dmy(31032016)),
          falls_flag == 1,
          substr(cis_admission_type, 1, 1) == "3") %>%
-  mutate(fyear = "2015/16") %>%
+  mutate(financial_year = "2015/16") %>%
   
   # Calculate a person's age as at their admission date and classify this into
   # the relevant age bands
+  # Note - use 'dob' variable
   mutate(admission_age = floor(time_length(interval(dob, cis_admission_date), 
                                            unit = "years")),
          age_band = case_when(
@@ -90,7 +92,7 @@ falls <- smr1_extract %>%
            admission_age >= 65 ~ "65+")) %>%
   
   # Aggregate to find totals by age band
-  group_by(fyear, council_area, 
+  group_by(financial_year, council_area, 
            age_band = forcats::fct_relevel(age_band, "Under 18")) %>%
   summarise(emergency_admissions = n()) %>%
   ungroup()

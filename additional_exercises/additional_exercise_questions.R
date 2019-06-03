@@ -12,6 +12,7 @@ under_18 <- smr1_extract %>%
   # specific locality
   
   # Calculate a person's age as at their admission date
+  # Note - use 'dob' variable
   
   # Filter only financial year of interest and
   # only stays which begin as an emergency admission
