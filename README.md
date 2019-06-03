@@ -13,7 +13,7 @@ Type `getwd()` into the RStudio console to get the working directory for this pr
 
 ### SPSS Equivalent Functions ###
 
-Below is an approximate and non-exhaustive list of equivalent functions in R and SPSS which are commonly used in analysis of SMR data. The majority of the R functions below come from the [dplyr](https://github.com/tidyverse/dplyr), [tidyr](https://github.com/tidyverse/tidyr) and [magrittr](https://github.com/tidyverse/magrittr) packages, part of the [tidyverse](https://github.com/tidyverse) suite of packages.
+Below is an approximate and non-exhaustive list of equivalent functions in R and SPSS which are commonly used in analysis of SMR data. The majority of the R functions below come from the [dplyr](https://github.com/tidyverse/dplyr), [tidyr](https://github.com/tidyverse/tidyr) and [magrittr](https://github.com/tidyverse/magrittr) packages, part of the [tidyverse](https://github.com/tidyverse) collection of packages.
 
 R | SPSS
 ---|---
