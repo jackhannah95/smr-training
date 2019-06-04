@@ -16,7 +16,7 @@
 ### dplyr, tidylog, tidyr, purrr & janitor (for data manipulation);
 ### magrittr (for compound assignment pipe-operator %<>%);
 ### lubridate (for dates);
-### openxlsx (for writing Excel files)
+### writexl (for writing Excel files)
 
 
 
@@ -309,7 +309,7 @@ mort <- smr1_extract %>%
   # Flag 28-day emergency readmissions
   mutate(readmission_28_days = if_else(
     link_no == c(tail(link_no, -1), 0) &
-      substr(lag(cis_admission_type), 1, 1) == 3 &
+      substr(lead(cis_admission_type), 1, 1) == 3 &
       time_length(interval(cis_discharge_date, lead(cis_admission_date)),
                   unit = "day") <= 28,
     1, 0)) %>%
