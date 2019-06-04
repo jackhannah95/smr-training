@@ -29,8 +29,8 @@
 # Library' and a 'System Library'
 
 # If any of the odbc, haven, here, dplyr, tidylog, tidyr, purrr, janitor, 
-# magrittr or lubridate packages are not contained within your User Library, 
-# uncomment the relevant lines of code below to install them
+# magrittr, lubridate or writexl packages are not contained within your User 
+# Library, uncomment the relevant lines of code below to install them
 
 # Packages need to be re-loaded every time you re-start R, but they only need 
 # to be installed once
