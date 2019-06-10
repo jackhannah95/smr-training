@@ -1,4 +1,4 @@
-# Question 4: Which locality in D&G had the highest number of emergency 
+# Question 4: Which locality in D&G has the highest number of emergency 
 # admissions for under 18s during 2015/16?
 
 under_18 <- smr1_extract %>%
@@ -21,7 +21,7 @@ under_18 <- smr1_extract %>%
   # Aggregate to find locality totals
 
 
-# Question 5: Which age band (<18, 18-34, 35-49, 50-64, 65+) had the highest 
+# Question 5: Which age band (<18, 18-34, 35-49, 50-64, 65+) has the highest 
 # number of emergency admissions for falls (W00-W19) in D&G as a whole during 
 # 2015/16?
 # (Look for diagnosis in all positions of all episodes)
