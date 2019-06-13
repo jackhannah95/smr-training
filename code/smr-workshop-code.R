@@ -5,7 +5,7 @@
 ### Original Author: Jack Hannah
 ### Original Date: 09 April 2018
 ### Last edited by: Jack Hannah
-### Last edited on: 04 June 2019
+### Last edited on: 13 June 2019
 ###
 ### Written to be run on RStudio Server
 ###
@@ -165,9 +165,11 @@ mi <- smr1_extract %>%
   left_join(dg_pop, by = "locality") %>%
   
   # Calculate emergency admission rate per 1,000 population
-  mutate(emergency_admission_rate = round(emergency_mi_admissions /
-                                            population * 1000,
-                                          digits = 2))
+  # Type `?round_half_up` into the console for explanation of the difference 
+  # between `janitor::round_half_up` and the base `round` function
+  mutate(emergency_admission_rate = round_half_up(emergency_mi_admissions /
+                                                    population * 1000,
+                                                  digits = 2))
 
 
 # Save output to Excel
@@ -238,9 +240,9 @@ copd <- smr1_extract %>%
   left_join(dg_pop, by = "locality") %>%
   
   # Calculate multiple emergency admission rate per 1,000 population
-  mutate(multiple_emergency_admission_rate = round(patients /
-                                                     population * 1000,
-                                                   digits = 2)) %>%
+  mutate(multiple_emergency_admission_rate = round_half_up(patients /
+                                                             population * 1000,
+                                                           digits = 2)) %>%
   
   # Restructure dataset by dropping patients and population variables and 
   # converting each emergency admission band into a variable with a 
@@ -324,12 +326,12 @@ mort <- smr1_extract %>%
   left_join(dg_pop, by = "locality") %>%
   
   # Calculate 28-day emergency readmission rate and 30-day mortality rate
-  mutate(mortality_rate = round(mortality_30_days /
-                                  population * 1000,
-                                digits = 2),
-         emerg_readm_rate = round(readmission_28_days /
-                                    population * 1000,
-                                  digits = 2))
+  mutate(mortality_rate = round_half_up(mortality_30_days /
+                                          population * 1000,
+                                        digits = 2),
+         emerg_readm_rate = round_half_up(readmission_28_days /
+                                            population * 1000,
+                                          digits = 2))
 
 # Save output to Excel, dropping population, mortality rate and emergency 
 # readmission rate variables
