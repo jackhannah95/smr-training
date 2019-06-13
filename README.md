@@ -9,8 +9,6 @@ To download this repository, click the green 'Clone or download' button and then
 
 To open the project in the RStudio server, click File -> Open Project -> navigate to the folder where the project is saved -> open the `SMR-Training.Rproj` file.
 
-Note that a sub-folder named `output` needs to be created manually after the repository has been downloaded, as the confidential data contained within it cannot be stored on GitHub.
-
 
 ### RStudio Projects
 
