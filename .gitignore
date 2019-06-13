@@ -3,8 +3,5 @@
 .RData
 .Ruserdata
 
-# 'output' folder #
-output/
-
 # Excel files #
 *.[xX][lL][sS][xXmMtT]?
