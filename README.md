@@ -5,7 +5,7 @@ This repository contains the code used to train [LIST](https://www.isdscotland.o
 
 ### Instructions for Running
 
-To download this repository, click the green 'Clone or download' button and then click 'Download ZIP'. Unzip the folder in a location on the network which is accessible via the RStudio server.
+To download this repository, click the green 'Clone or download' button and then click 'Download ZIP'. Unzip the folder in a location on the network which is accessible via the [RStudio server](nssrstudio.csa.scot.nhs.uk).
 
 To open the project in the RStudio server, click File -> Open Project -> navigate to the folder where the project is saved -> open the `SMR-Training.Rproj` file.
 
