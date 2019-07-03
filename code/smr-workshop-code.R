@@ -5,7 +5,7 @@
 ### Original Author: Jack Hannah
 ### Original Date: 09 April 2018
 ### Last edited by: Jack Hannah
-### Last edited on: 13 June 2019
+### Last edited on: 03 July 2019
 ###
 ### Written to be run on RStudio Server
 ###
@@ -186,10 +186,8 @@ copd <- smr1_extract %>%
   
   # Flag episodes where COPD diagnosis is present in any condition variable
   # Multiplying by 1 changes flag from true/false to 1/0
-  mutate(copd_flag = purrr::pmap_dbl(select(., contains("condition")), 
-                                     ~any(substr(c(...), 1, 1) == "J" &
-                                            between(as.numeric(
-                                              substr(c(...), 2, 3)), 40, 44), 
+  mutate(copd_flag = purrr::pmap_dbl(select(., contains("condition")),
+                                     ~any(grepl("*J4[0-4]", c(...)),
                                           na.rm = TRUE) * 1)) %>%
   
   # Arrange episodes into chronological order for each stay
