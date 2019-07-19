@@ -2,6 +2,8 @@
 
 This repository contains the code used to train [LIST](https://www.isdscotland.org/Health%2DTopics/Health%2Dand%2DSocial%2DCommunity%2DCare/Local%2DIntelligence%2DSupport%2DTeam/) analysts in R. While written to be contextually relevant to work commonly undertaken in LIST, it may also be relevant to other analysts who use [SMR](https://www.ndc.scot.nhs.uk/Data%2DDictionary/SMR%2DDatasets/) data.
 
+Please note that this GitHub repository contains the master copy of this training material. Any local copies which exist on the network will not be maintained. 
+
 
 ### Instructions for Running
 
