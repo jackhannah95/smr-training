@@ -22,7 +22,13 @@ Type `getwd()` into the RStudio console to get the working directory for this pr
 
 ### SPSS Equivalent Functions ###
 
-Below is an approximate and non-exhaustive list of equivalent functions in R and SPSS which are commonly used in analysis of SMR data. The majority of the R functions below come from the [dplyr](https://github.com/tidyverse/dplyr), [tidyr](https://github.com/tidyverse/tidyr) and [magrittr](https://github.com/tidyverse/magrittr) packages, part of the [tidyverse](https://github.com/tidyverse) collection of packages.
+The below table contains an approximate and non-exhaustive list of equivalent functions in R and SPSS which are commonly used in analysis of SMR data. The R functions come from the [dplyr](https://github.com/tidyverse/dplyr), [tidyr](https://github.com/tidyverse/tidyr) and [magrittr](https://github.com/tidyverse/magrittr) packages, part of the [tidyverse](https://github.com/tidyverse) collection of packages.
+
+Please note that, where not explicitly stated, it is assumed in the R code listed in the below table that the data have first been piped (`%>%` or `%<>%`) to the function, for example:
+
+- `new_df <- old_df %>%`<br>&nbsp;&nbsp;&nbsp;`mutate(x = 2)`
+
+- `df %<>%`<br>&nbsp;&nbsp;&nbsp;`select(x, y) %>%`<br>&nbsp;&nbsp;&nbsp;`arrange(x)`
 
 R | SPSS
 ---|---
@@ -30,12 +36,11 @@ R | SPSS
 `arrange(desc(x))` | `SORT CASES BY X (D)`
 `first(x)` | `FIRST(X)`
 `last(x)` | `LAST(X)`
-`substr(x, 1, 1)` | `SUBSTR(X, 1, 1)`
 `filter(x == 2)` | `SELECT IF X = 2`
 `filter(x != 2)` | `SELECT IF NOT (X = 2)`
 `select(x)` |  `/KEEP X`
 `select(-x)` |  `/DROP X`
 `mutate(x = 2)` | `COMPUTE X = 2`
 `drop_na(x)` | `SELECT IF NOT (SYSMIS(X))`
-`left_join(x, y, by = "common_variable")` | `MATCH FILES FILE = X`<br>&nbsp;&nbsp;&nbsp;`/TABLE = Y`<br>&nbsp;&nbsp;&nbsp;`/BY COMMON_VARIABLE`
+`df %<>%`<br>&nbsp;&nbsp;&nbsp;`left_join(lookup, by = "common_variable")` | `MATCH FILES`<br>&nbsp;&nbsp;&nbsp;`/FILE = *`<br>&nbsp;&nbsp;&nbsp;`/TABLE = "/PATH/TO/LOOKUP"`<br>&nbsp;&nbsp;&nbsp;`/BY COMMON_VARIABLE`
 `df %<>%`<br>&nbsp;&nbsp;&nbsp;`group_by(x) %>%`<br>&nbsp;&nbsp;&nbsp;`summarise(y = sum(y)) %>%`<br>&nbsp;&nbsp;&nbsp;`ungroup()` | `AGGREGATE OUTFILE = *`<br>&nbsp;&nbsp;&nbsp;`/BREAK X`<br>&nbsp;&nbsp;&nbsp;`/Y = SUM(Y)`
