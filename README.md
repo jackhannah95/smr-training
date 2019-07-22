@@ -38,4 +38,4 @@ R | SPSS
 `mutate(x = 2)` | `COMPUTE X = 2`
 `drop_na(x)` | `SELECT IF NOT (SYSMIS(X))`
 `left_join(x, y, by = "common_variable")` | `MATCH FILES FILE = X`<br>&nbsp;&nbsp;&nbsp;`/TABLE = Y`<br>&nbsp;&nbsp;&nbsp;`/BY COMMON_VARIABLE`
-`data %<>%`<br>&nbsp;&nbsp;&nbsp;`group_by(x) %>%`<br>&nbsp;&nbsp;&nbsp;`summarise(y = sum(y)) %>%`<br>&nbsp;&nbsp;&nbsp;`ungroup()` | `AGGREGATE OUTFILE = *`<br>&nbsp;&nbsp;&nbsp;`/BREAK X`<br>&nbsp;&nbsp;&nbsp;`/Y = SUM(Y)`
+`df %<>%`<br>&nbsp;&nbsp;&nbsp;`group_by(x) %>%`<br>&nbsp;&nbsp;&nbsp;`summarise(y = sum(y)) %>%`<br>&nbsp;&nbsp;&nbsp;`ungroup()` | `AGGREGATE OUTFILE = *`<br>&nbsp;&nbsp;&nbsp;`/BREAK X`<br>&nbsp;&nbsp;&nbsp;`/Y = SUM(Y)`
