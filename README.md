@@ -26,9 +26,9 @@ The below table contains an approximate and non-exhaustive list of equivalent fu
 
 Please note that, where not explicitly stated, it is assumed in the R code listed in the below table that the data have first been piped (`%>%` or `%<>%`) to the function, for example:
 
-- `new_df <- old_df %>%`<br>&nbsp;&nbsp;&nbsp;`mutate(x = 2)`
+- `new_df <- old_df %>%`<br>&nbsp;&nbsp;&nbsp;`arrange(x) %>%`<br>&nbsp;&nbsp;&nbsp;`filter(x = first(x))`
 
-- `df %<>%`<br>&nbsp;&nbsp;&nbsp;`select(x, y) %>%`<br>&nbsp;&nbsp;&nbsp;`arrange(x)`
+- `df %<>%`<br>&nbsp;&nbsp;&nbsp;`select(x, y) %>%`<br>&nbsp;&nbsp;&nbsp;`mutate(z = x + y)`
 
 R | SPSS
 ---|---
