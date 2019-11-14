@@ -55,7 +55,7 @@ library(odbc)
 library(haven)
 library(here)
 library(dplyr)
-library(tidyr)
+library(tidyr) # Ensure tidyr version is >= 1.0.0
 library(tidylog)
 library(janitor)
 library(magrittr)
@@ -247,11 +247,14 @@ copd <- smr1_extract %>%
                                                              population * 1000,
                                                            digits = 2)) %>%
   
-  # Restructure dataset by dropping patients and population variables and 
+  # Restructure dataset by dropping the patients and population variables and 
   # converting each emergency admission band into a variable with a 
   # corresponding multiple emergency admission rate
-  select(-patients, -population) %>%
-  spread(emergency_admission_bands, multiple_emergency_admission_rate)
+  pivot_wider(
+    id_cols = c(-patients, -population),
+    names_from = emergency_admission_bands,
+    values_from = multiple_emergency_admission_rate
+  )
 
 
 # Save output to Excel
