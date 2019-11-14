@@ -5,7 +5,7 @@
 ### Original Author: Jack Hannah
 ### Original Date: 09 April 2018
 ### Last edited by: Jack Hannah
-### Last edited on: 03 July 2019
+### Last edited on: 14 November 2019
 ###
 ### Written to be run on RStudio Server
 ###
@@ -55,8 +55,8 @@ library(odbc)
 library(haven)
 library(here)
 library(dplyr)
-library(tidylog)
 library(tidyr)
+library(tidylog)
 library(janitor)
 library(magrittr)
 library(lubridate)
@@ -68,7 +68,7 @@ library(writexl)
 
 
 # 2.1 - Source SQL queries
-source(here::here("code", "sql_queries.R"))
+source(here::here("code", "00_sql-queries.R"))
 
 
 # 2.2 - Connect to SMRA tables using odbc connection
