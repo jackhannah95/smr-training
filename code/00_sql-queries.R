@@ -5,7 +5,7 @@
 ### Original Author: Jack Hannah
 ### Original Date: 09 April 2018
 ### Last edited by: Jack Hannah
-### Last edited on: 13 March 2019
+### Last edited on: 14 November 2019
 ###
 ### Written to be run on RStudio Server
 ###
@@ -22,11 +22,12 @@ query_smr1 <- paste("SELECT ADMISSION_DATE, ADMISSION_TYPE, ADMISSION,",
                     "OTHER_CONDITION_5, LINK_NO, RECORD_TYPE, SORT_MARKER, URI",
                     "FROM ANALYSIS.SMR01_PI",
                     "WHERE COUNCIL_AREA = '08' AND",
-                    "DISCHARGE_DATE >= {d '2014-01-01'}")
+                    "DISCHARGE_DATE >= TO_DATE('2014-01-01', 'yyyy-mm-dd')")
 
 
 
 # Query 2: Extract death data in 2015/16 ----
 query_deaths <- paste("SELECT LINK_NO, DATE_OF_DEATH",
                       "FROM ANALYSIS.GRO_DEATHS_C",
-                      "WHERE DATE_OF_DEATH >= {d '2015-04-01'}")
+                      "WHERE", 
+                      "DATE_OF_DEATH >= TO_DATE('2015-04-01', 'yyyy-mm-dd')")

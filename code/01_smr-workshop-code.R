@@ -5,7 +5,7 @@
 ### Original Author: Jack Hannah
 ### Original Date: 09 April 2018
 ### Last edited by: Jack Hannah
-### Last edited on: 03 July 2019
+### Last edited on: 14 November 2019
 ###
 ### Written to be run on RStudio Server
 ###
@@ -13,7 +13,7 @@
 ### odbc (for SMRA extraction);
 ### haven (for reading SPSS files);
 ### here (for defining filepaths);
-### dplyr, tidylog, tidyr, purrr & janitor (for data manipulation);
+### dplyr, tidyr, tidylog, purrr & janitor (for data manipulation);
 ### magrittr (for compound assignment pipe-operator %<>%);
 ### lubridate (for dates);
 ### writexl (for writing Excel files)
@@ -28,21 +28,21 @@
 # In the 'Packages' pane in the bottom right of the screen, there is a 'User 
 # Library' and a 'System Library'
 
-# If any of the odbc, haven, here, dplyr, tidylog, tidyr, purrr, janitor, 
+# If any of the odbc, haven, here, dplyr, tidyr, tidylog, purrr, janitor, 
 # magrittr, lubridate or writexl packages are not contained within your User 
 # Library, uncomment the relevant lines of code below to install them
 
 # Packages need to be re-loaded every time you re-start R, but they only need 
 # to be installed once
-# Please re-comment the relevant lines below once you've installed the 
-# necessary packages and ignore this section in future
+# Please re-comment or delete the relevant lines below once you've installed  
+# the necessary packages and ignore this section in future
 
 # install.packages("odbc")
 # install.packages("haven")
 # install.packages("here")
 # install.packages("dplyr")
-# install.packages("tidylog")
 # install.packages("tidyr")
+# install.packages("tidylog")
 # install.packages("purrr")
 # install.packages("janitor")
 # install.packages("magrittr")
@@ -55,8 +55,8 @@ library(odbc)
 library(haven)
 library(here)
 library(dplyr)
+library(tidyr) # Ensure tidyr version is >= 1.0.0
 library(tidylog)
-library(tidyr)
 library(janitor)
 library(magrittr)
 library(lubridate)
@@ -68,7 +68,12 @@ library(writexl)
 
 
 # 2.1 - Source SQL queries
-source(here::here("code", "sql_queries.R"))
+# Both the `here` and `lubridate` packages have a function called `here`, and 
+# because `lubridate` was loaded later, `lubridate::here` masks `here::here`
+# To circumvent issues with masking , either edit the order in which packages  
+# are loaded, or explicitly declare which package a function comes from, e.g. 
+# use `lubridate::here` or `here::here` instead of `here`
+source(here::here("code", "00_sql-queries.R"))
 
 
 # 2.2 - Connect to SMRA tables using odbc connection
@@ -166,7 +171,7 @@ mi <- smr1_extract %>%
   
   # Calculate emergency admission rate per 1,000 population
   # Type `?round_half_up` into the console for explanation of the difference 
-  # between `janitor::round_half_up` and the base `round` function
+  # between `janitor::round_half_up` and `base::round`
   mutate(emergency_admission_rate = round_half_up(emergency_mi_admissions /
                                                     population * 1000,
                                                   digits = 2))
@@ -242,11 +247,14 @@ copd <- smr1_extract %>%
                                                              population * 1000,
                                                            digits = 2)) %>%
   
-  # Restructure dataset by dropping patients and population variables and 
+  # Restructure dataset by dropping the patients and population variables and 
   # converting each emergency admission band into a variable with a 
   # corresponding multiple emergency admission rate
-  select(-patients, -population) %>%
-  spread(emergency_admission_bands, multiple_emergency_admission_rate)
+  pivot_wider(
+    id_cols = c(-patients, -population),
+    names_from = emergency_admission_bands,
+    values_from = multiple_emergency_admission_rate
+  )
 
 
 # Save output to Excel

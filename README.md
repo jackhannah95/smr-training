@@ -7,7 +7,7 @@ Please note that this GitHub repository contains the master copy of this trainin
 
 ### Instructions for Running
 
-To download this repository, click the green 'Clone or download' button and then click 'Download ZIP'. Unzip the folder in a location on the network which is accessible via the [RStudio server](http://nssrstudio.csa.scot.nhs.uk/auth-sign-in).
+To download this repository, click the green 'Clone or download' button and then click 'Download ZIP'. Unzip the folder in a location on the network which is accessible via the [RStudio server](http://spsssrv02.csa.scot.nhs.uk:8787/).
 
 To open the project in the RStudio server, click File -> Open Project -> navigate to the folder where the project is saved -> open the `SMR-Training.Rproj` file.
 
