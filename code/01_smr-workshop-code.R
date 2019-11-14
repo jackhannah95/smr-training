@@ -13,7 +13,7 @@
 ### odbc (for SMRA extraction);
 ### haven (for reading SPSS files);
 ### here (for defining filepaths);
-### dplyr, tidylog, tidyr, purrr & janitor (for data manipulation);
+### dplyr, tidyr, tidylog, purrr & janitor (for data manipulation);
 ### magrittr (for compound assignment pipe-operator %<>%);
 ### lubridate (for dates);
 ### writexl (for writing Excel files)
@@ -28,21 +28,21 @@
 # In the 'Packages' pane in the bottom right of the screen, there is a 'User 
 # Library' and a 'System Library'
 
-# If any of the odbc, haven, here, dplyr, tidylog, tidyr, purrr, janitor, 
+# If any of the odbc, haven, here, dplyr, tidyr, tidylog, purrr, janitor, 
 # magrittr, lubridate or writexl packages are not contained within your User 
 # Library, uncomment the relevant lines of code below to install them
 
 # Packages need to be re-loaded every time you re-start R, but they only need 
 # to be installed once
-# Please re-comment the relevant lines below once you've installed the 
-# necessary packages and ignore this section in future
+# Please re-comment or delete the relevant lines below once you've installed  
+# the necessary packages and ignore this section in future
 
 # install.packages("odbc")
 # install.packages("haven")
 # install.packages("here")
 # install.packages("dplyr")
-# install.packages("tidylog")
 # install.packages("tidyr")
+# install.packages("tidylog")
 # install.packages("purrr")
 # install.packages("janitor")
 # install.packages("magrittr")
@@ -166,7 +166,7 @@ mi <- smr1_extract %>%
   
   # Calculate emergency admission rate per 1,000 population
   # Type `?round_half_up` into the console for explanation of the difference 
-  # between `janitor::round_half_up` and the base `round` function
+  # between `janitor::round_half_up` and `base::round`
   mutate(emergency_admission_rate = round_half_up(emergency_mi_admissions /
                                                     population * 1000,
                                                   digits = 2))
