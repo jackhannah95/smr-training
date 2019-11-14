@@ -72,7 +72,7 @@ library(writexl)
 # because `lubridate` was loaded later, `lubridate::here` masks `here::here`
 # To circumvent issues with masking , either edit the order in which packages  
 # are loaded, or explicitly declare which package a function comes from, e.g. 
-# use `lubridate::here` or `here::here` instead of just `here`
+# use `lubridate::here` or `here::here` instead of `here`
 source(here::here("code", "00_sql-queries.R"))
 
 
