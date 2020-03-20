@@ -1,11 +1,10 @@
 ################################################################
 ### SMR Training Code
-### LIST Team
 ###
 ### Original Author: Jack Hannah
 ### Original Date: 09 April 2018
 ### Last edited by: Jack Hannah
-### Last edited on: 14 November 2019
+### Last edited on: 20 March 2019
 ###
 ### Written to be run on RStudio Server
 ###
