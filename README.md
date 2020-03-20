@@ -1,6 +1,6 @@
 # SMR Training
 
-This repository contains the code used to train [LIST](https://www.isdscotland.org/Health%2DTopics/Health%2Dand%2DSocial%2DCommunity%2DCare/Local%2DIntelligence%2DSupport%2DTeam/) analysts in R. While written to be contextually relevant to work commonly undertaken in LIST, it may also be relevant to other analysts who use [SMR](https://www.ndc.scot.nhs.uk/Data%2DDictionary/SMR%2DDatasets/) data.
+This repository contains materials used to train [Public Health Scotland (PHS)](https://www.publichealthscotland.scot/) analysts in R using [SMR](https://www.ndc.scot.nhs.uk/Data%2DDictionary/SMR%2DDatasets/) data. While originally written to be contextually relevant to work commonly undertaken by analysts working as part of [LIST](https://www.isdscotland.org/Health%2DTopics/Health%2Dand%2DSocial%2DCommunity%2DCare/Local%2DIntelligence%2DSupport%2DTeam/), it should also be relevant to analysts in other teams who use SMR data.
 
 Please note that this GitHub repository contains the master copy of this training material. Any local copies which exist on the network will not be maintained. 
 
@@ -9,7 +9,7 @@ Please note that this GitHub repository contains the master copy of this trainin
 
 To download this repository, click the green 'Clone or download' button and then click 'Download ZIP'. Unzip the folder in a location on the network which is accessible via the [RStudio server](https://rstudio.nhsnss.scot.nhs.uk/).
 
-To open the project in the RStudio server, click File -> Open Project -> navigate to the folder where the project is saved -> open the `SMR-Training.Rproj` file.
+To open the project in the RStudio server, click File -> Open Project -> navigate to the folder where the project is saved -> open the `smr-training.Rproj` file.
 
 
 ### RStudio Projects
