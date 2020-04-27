@@ -15,7 +15,7 @@ To open the project in the RStudio server, click File -> Open Project -> navigat
 ### RStudio Projects
 
 This code uses [RStudio Projects](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects), which are a way of bundling together related files and scripts. RStudio Projects come with a `.Rproj` file, and wherever this file is saved is 
-where RStudio sets the working directory, from which other filepaths can be defined relatively using the [here](https://github.com/r-lib/here) package. A new project which follows the recommended structure within PHI can be created using the [phiproject](https://github.com/Health-SocialCare-Scotland/phiproject) package.
+where RStudio sets the working directory, from which other filepaths can be defined relatively using the [here](https://github.com/r-lib/here) package. A new project which follows the recommended structure within PHS can be created using the [phstemplates](https://github.com/Health-SocialCare-Scotland/phstemplates) package.
 
 Type `getwd()` into the RStudio console to get the working directory for this project.
 
