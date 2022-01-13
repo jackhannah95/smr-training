@@ -2,7 +2,7 @@
 
 This repository contains materials used to train [Public Health Scotland (PHS)](https://www.publichealthscotland.scot/) analysts in R using [SMR](https://www.ndc.scot.nhs.uk/Data%2DDictionary/SMR%2DDatasets/) data. While originally written to be relevant for analysts working as part of [LIST](https://www.isdscotland.org/Health%2DTopics/Health%2Dand%2DSocial%2DCommunity%2DCare/Local%2DIntelligence%2DSupport%2DTeam/), it should also be relevant to analysts in other teams who use SMR data.
 
-Please note that this GitHub repository contains the master copy of this training material. Any local copies which exist on the network will not be maintained. 
+Please note that this GitHub repository contains the main copy of this training material. Any local copies which exist on the network will not be maintained. 
 
 
 ### Instructions for Running
