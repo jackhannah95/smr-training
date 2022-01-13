@@ -191,7 +191,7 @@ copd <- smr1_extract %>%
   # Flag episodes where COPD diagnosis is present in any condition variable
   # Multiplying by 1 changes flag from true/false to 1/0
   mutate(copd_flag = purrr::pmap_dbl(select(., contains("condition")),
-                                     ~any(grepl("^J4[0-4]", c(...)),
+                                     ~any(grepl("^J4[0-4]", .x),
                                           na.rm = TRUE) * 1)) %>%
   
   # Arrange episodes into chronological order for each stay

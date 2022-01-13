@@ -52,7 +52,7 @@ falls <- smr1_extract %>%
   
   # Flag episodes where falls diagnosis is present in any condition variable
   mutate(falls_flag = purrr::pmap_dbl(select(., contains("condition")),
-                                      ~any(grepl("^W[0-1][0-9]", c(...)),
+                                      ~any(grepl("^W[0-1][0-9]", .x),
                                            na.rm = TRUE) * 1)) %>%
   
   # Arrange episodes into chronolgical order for each stay
@@ -94,3 +94,7 @@ falls <- smr1_extract %>%
            age_band = forcats::fct_relevel(age_band, "Under 18")) %>%
   summarise(emergency_admissions = n()) %>%
   ungroup()
+
+
+
+### END OF SCRIPT ###
