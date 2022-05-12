@@ -3,8 +3,6 @@
 ###
 ### Original Author: Jack Hannah
 ### Original Date: 09 April 2018
-### Last edited by: Jack Hannah
-### Last edited on: 20 March 2020
 ###
 ### Written to be run on RStudio Server
 ###
